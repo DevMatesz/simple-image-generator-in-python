@@ -1,0 +1,33 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import fetch_openml
+import random
+import tkinter as tk
+from tkinter import ttk
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+mnist = fetch_openml('mnist_784', as_frame=False)
+X, Y = mnist.data, mnist.target
+
+def plot_random_digit():
+    random_index = random.randint(0, X.shape[0] - 1)
+    random_digit = X[random_index].reshape(28, 28)
+
+    ax.clear()
+    ax.imshow(random_digit, cmap="binary")
+    ax.axis("off")
+
+    canvas.draw()
+
+root = tk.Tk()
+root.title("Random MNIST Digit Generator")
+
+fig, ax = plt.subplots()
+
+canvas = FigureCanvasTkAgg(fig, master=root)
+canvas.get_tk_widget().pack()
+
+generate_button = ttk.Button(root, text="Generate Random Digit", command=plot_random_digit)
+generate_button.pack()
+
+root.mainloop()
